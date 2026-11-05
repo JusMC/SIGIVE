@@ -20,12 +20,9 @@ namespace proyectoFinal.models
             Descripcion = descripcion;
         }
 
-        // Muestra los datos de la categoría en consola.
-        public void MostrarDatos()
+        public override string ToString()
         {
-            Console.WriteLine("Numero de categoria: " + Id);
-            Console.WriteLine("Nombre: " + Nombre);
-            Console.WriteLine("Descripción: " + Descripcion);
+            return Nombre;
         }
     }
 }

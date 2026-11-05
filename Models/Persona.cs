@@ -1,4 +1,4 @@
-﻿namespace proyectoFinal.models
+﻿namespace SIGIVE.models
 
 /// <summary>
 ///     Clase base abstracta para las personas que usarán el sistema (como clientes y administradores).
@@ -24,7 +24,7 @@
 
         // Métodos
 
-            // Función abstracta que muestra la info de la persona, cada clase hija lo adapta a su manera
-            public abstract void MostrarInformacion();
+            // Método abstracto que muestra la info de la persona, cada clase hija lo adapta a su manera
+            public abstract string ObtenerInformacion();
     }
 }
