@@ -1,4 +1,4 @@
-# Sistema de Ventas
+# Sistema De Gestión De Inventario Y Ventas
 
 Proyecto final del curso **Programación 5**, impartido por el profesor Pablo Cordero Vega.
 
