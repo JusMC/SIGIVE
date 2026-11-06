@@ -18,7 +18,7 @@ Sistema de ventas desarrollado en C# que permite gestionar productos, clientes y
 - C# / .NET 8.0
 - Visual Studio
 - MySQL
-- WinForms _(próximamente)_
+- WinForms
 - Git / GitHub
 
 ## Funcionalidades
