@@ -1,9 +1,8 @@
-namespace proyectoFinal.models
+namespace SIGIVE.Models
 {
     /// <summary>
     ///     Representa una línea de una venta: un producto, la cantidad y el precio.
     /// </summary>
-
     public class DetalleVenta
     {
         // Atributos
@@ -24,19 +23,9 @@ namespace proyectoFinal.models
         /// <summary>
         ///     Calcula el subtotal de la línea (cantidad por precio unitario).
         /// </summary>
-
         public decimal CalcularSubtotal()
         {
             return Cantidad * PrecioUnitario;
-        }
-
-        /// <summary>
-        ///     Muestra la línea de detalle en consola.
-        /// </summary>
-
-        public void MostrarDatos()
-        {
-            Console.WriteLine(Producto.Nombre + " x" + Cantidad + " a " + PrecioUnitario + " = " + CalcularSubtotal());
         }
     }
 }

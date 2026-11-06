@@ -1,10 +1,8 @@
-﻿namespace SIGIVE.models
-
-/// <summary>
-///     Clase base abstracta para las personas que usarán el sistema (como clientes y administradores).
-/// </summary>
-
+﻿namespace SIGIVE.Models
 {
+    /// <summary>
+    ///     Clase base abstracta para las personas que usarán el sistema (como clientes y administradores).
+    /// </summary>
     public abstract class Persona
     {
         // Atributos
@@ -22,9 +20,9 @@
             Correo = correo;
         }
 
-        // Métodos
-
-            // Método abstracto que muestra la info de la persona, cada clase hija lo adapta a su manera
-            public abstract string ObtenerInformacion();
+        /// <summary>
+        ///     Devuelve la información de la persona. Cada clase hija lo adapta a su manera.
+        /// </summary>
+        public abstract string ObtenerInformacion();
     }
 }

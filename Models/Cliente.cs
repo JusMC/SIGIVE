@@ -1,10 +1,8 @@
-namespace SIGIVE.models
-
-/// <summary>
-///     Representa a un cliente que realiza las compras en el sistema.
-/// </summary>
-
+namespace SIGIVE.Models
 {
+    /// <summary>
+    ///     Representa a un cliente que realiza las compras en el sistema.
+    /// </summary>
     public class Cliente : Persona
     {
         // Constructor
@@ -13,7 +11,17 @@ namespace SIGIVE.models
         {
         }
 
-        
+        /// <summary>
+        ///     Devuelve la información completa del cliente.
+        /// </summary>
+        public override string ObtenerInformacion()
+        {
+            return "Cliente #" + Id + "\nNombre: " + Nombre + "\nTeléfono: " + Telefono + "\nCorreo: " + Correo;
+        }
+
+        /// <summary>
+        ///     Texto que se muestra cuando el cliente aparece en un ComboBox o lista.
+        /// </summary>
         public override string ToString()
         {
             return Nombre;

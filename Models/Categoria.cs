@@ -1,12 +1,10 @@
-namespace proyectoFinal.models
+namespace SIGIVE.Models
 {
     /// <summary>
     ///     Representa una categoría para agrupar productos.
     /// </summary>
-
     public class Categoria
     {
-        
         // Atributos
         public int Id { get; set; }
         public string Nombre { get; set; }
@@ -20,6 +18,9 @@ namespace proyectoFinal.models
             Descripcion = descripcion;
         }
 
+        /// <summary>
+        ///     Texto que se muestra cuando la categoría aparece en un ComboBox o tabla.
+        /// </summary>
         public override string ToString()
         {
             return Nombre;
