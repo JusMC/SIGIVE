@@ -5,6 +5,12 @@ namespace SIGIVE.Models
     /// </summary>
     public class Cliente : Persona
     {
+
+        // Constructor vacío para  JSON
+        public Cliente()
+        {
+        }
+
         // Constructor
         public Cliente(int id, string nombre, string telefono, string correo)
             : base(id, nombre, telefono, correo)

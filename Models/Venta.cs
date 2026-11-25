@@ -12,6 +12,13 @@ namespace SIGIVE.Models
         public List<DetalleVenta> Detalles { get; set; }
 
         // Constructor
+
+        // Constructor vacío requerido para serialización JSON
+        public Venta()
+        {
+            Detalles = new List<DetalleVenta>();
+        }
+        
         public Venta(int id, Cliente cliente)
         {
             Id = id;

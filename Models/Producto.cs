@@ -13,6 +13,11 @@ namespace SIGIVE.Models
         public int Stock { get; set; }
         public Categoria Categoria { get; set; }
 
+        // Constructor vacío para JSON
+        public Producto()
+        {
+        }
+
         // Constructor
         public Producto(int codigo, string nombre, string descripcion, decimal precio, int stock, Categoria categoria)
         {

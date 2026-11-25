@@ -9,7 +9,10 @@ namespace SIGIVE.Models
         public int Id { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
-
+        // Constructor vacío para JSON
+        public Categoria()
+        {
+        }
         // Constructor
         public Categoria(int id, string nombre, string descripcion)
         {

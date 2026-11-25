@@ -11,6 +11,10 @@
         public string Telefono { get; set; }
         public string Correo { get; set; }
 
+    // Constructor vacío para JSON
+        public Persona()
+        {
+        }
         // Constructor
         public Persona(int id, string nombre, string telefono, string correo)
         {

@@ -1,10 +1,12 @@
 using SIGIVE.Models;
+using System.IO;
+using System.Text.Json;
+using System.Linq;
 
 namespace SIGIVE.Controllers
 {
     /// <summary>
-    ///     Controlador de clientes: maneja el CRUD de clientes en memoria.
-    ///     No muestra nada en pantalla; recibe los datos desde el formulario y devuelve el resultado.
+    ///     Controlador de clientes: maneja el CRUD de clientes en memoria y los guarda en un archivo JSON.
     /// </summary>
     public class ClienteController
     {
@@ -17,6 +19,7 @@ namespace SIGIVE.Controllers
         {
             clientes = new List<Cliente>();
             siguienteId = 1;
+            CargarDatosJson();
         }
 
         /// <summary>
@@ -43,7 +46,7 @@ namespace SIGIVE.Controllers
         }
 
         /// <summary>
-        ///     Agrega un cliente. Devuelve false si falta el nombre.
+        ///     Agrega un cliente y guarda el archivo. Devuelve false si falta el nombre.
         /// </summary>
         public bool Agregar(string nombre, string telefono, string correo)
         {
@@ -55,11 +58,13 @@ namespace SIGIVE.Controllers
             Cliente cliente = new Cliente(siguienteId, nombre, telefono, correo);
             clientes.Add(cliente);
             siguienteId++;
+
+            GuardarDatosJson();
             return true;
         }
 
         /// <summary>
-        ///     Cambia los datos de un cliente. Devuelve false si no existe o falta el nombre.
+        ///     Cambia los datos de un cliente y guarda el archivo. Devuelve false si no existe o falta el nombre.
         /// </summary>
         public bool Editar(int id, string nombre, string telefono, string correo)
         {
@@ -73,11 +78,13 @@ namespace SIGIVE.Controllers
             cliente.Nombre = nombre;
             cliente.Telefono = telefono;
             cliente.Correo = correo;
+
+            GuardarDatosJson();
             return true;
         }
 
         /// <summary>
-        ///     Elimina un cliente. Devuelve false si no existe.
+        ///     Elimina un cliente y guarda el archivo. Devuelve false si no existe.
         /// </summary>
         public bool Eliminar(int id)
         {
@@ -89,7 +96,40 @@ namespace SIGIVE.Controllers
             }
 
             clientes.Remove(cliente);
+            GuardarDatosJson();
             return true;
+        }
+
+        // 
+        // MÉTODOS PARA GUARDAR EN ARCHIVOS JSON
+        // 
+
+        public bool GuardarDatosJson()
+        {
+            try
+            {
+                string json = JsonSerializer.Serialize(clientes);
+                File.WriteAllText("clientes_backup.json", json);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public void CargarDatosJson()
+        {
+            if (File.Exists("clientes_backup.json"))
+            {
+                string json = File.ReadAllText("clientes_backup.json");
+                clientes = JsonSerializer.Deserialize<List<Cliente>>(json);
+
+                if (clientes.Count > 0)
+                {
+                    siguienteId = clientes.Max(c => c.Id) + 1;
+                }
+            }
         }
     }
 }

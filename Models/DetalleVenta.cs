@@ -11,6 +11,13 @@ namespace SIGIVE.Models
         public decimal PrecioUnitario { get; set; }
 
         // Constructor
+        public decimal Subtotal { get { return CalcularSubtotal(); } }
+
+        // Constructor vacío para JSON
+        public DetalleVenta()
+        {
+        }
+
         public DetalleVenta(Producto producto, int cantidad)
         {
             Producto = producto;
