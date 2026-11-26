@@ -1,33 +1,42 @@
-using SIGIVE.Controllers;
-using SIGIVE.Models;
+using SIGIVE.BLL;
+using SIGIVE.DTO;
+using SIGIVE.Excepciones;
 
 namespace SIGIVE.Views
 {
     /// <summary>
     ///     Formulario para administrar clientes (agregar, editar, eliminar y listar).
+    ///     Solo pide datos y muestra mensajes; las validaciones las hace ClienteBLL.
     /// </summary>
     public partial class FormClientes : Form
     {
         // Atributos
-        private ClienteController controller;
+        private ClienteBLL clienteBLL;
         private int idSeleccionado;
 
-        // Constructor: recibe el controlador desde el formulario principal
-        public FormClientes(ClienteController controller)
+        // Constructor
+        public FormClientes()
         {
             InitializeComponent();
-            this.controller = controller;
+            clienteBLL = new ClienteBLL();
             idSeleccionado = -1;
             ActualizarTabla();
         }
 
         /// <summary>
-        ///     Vuelve a cargar la lista de clientes en la tabla.
+        ///     Vuelve a cargar la lista de clientes desde la base de datos.
         /// </summary>
         private void ActualizarTabla()
         {
-            dgvClientes.DataSource = null;
-            dgvClientes.DataSource = controller.ObtenerClientes();
+            try
+            {
+                dgvClientes.DataSource = null;
+                dgvClientes.DataSource = clienteBLL.ObtenerTodos();
+            }
+            catch (Exception ex)
+            {
+                Mensajes.Error(ex);
+            }
         }
 
         /// <summary>
@@ -42,41 +51,60 @@ namespace SIGIVE.Views
             dgvClientes.ClearSelection();
         }
 
+        /// <summary>
+        ///     Crea un ClienteDTO con lo que está escrito en el formulario.
+        /// </summary>
+        private ClienteDTO LeerFormulario()
+        {
+            ClienteDTO cliente = new ClienteDTO();
+            cliente.Id = idSeleccionado;
+            cliente.Nombre = txtNombre.Text;
+            cliente.Telefono = txtTelefono.Text;
+            cliente.Correo = txtCorreo.Text;
+            return cliente;
+        }
+
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            bool agregado = controller.Agregar(txtNombre.Text, txtTelefono.Text, txtCorreo.Text);
-
-            if (agregado)
+            try
             {
-                MessageBox.Show("Cliente agregado.");
+                ClienteDTO cliente = LeerFormulario();
+                cliente.Id = 0; // es nuevo, MySQL le pone el Id
+                clienteBLL.Agregar(cliente);
+
+                Mensajes.Info("Cliente agregado.");
                 ActualizarTabla();
                 Limpiar();
             }
-            else
+            catch (ValidacionException ex)
             {
-                MessageBox.Show("El nombre es obligatorio.");
+                // Primero la excepción específica...
+                Mensajes.Advertencia(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // ...y al final la general
+                Mensajes.Error(ex);
             }
         }
 
         private void btnEditar_Click(object sender, EventArgs e)
         {
-            if (idSeleccionado == -1)
+            try
             {
-                MessageBox.Show("Seleccione un cliente de la tabla.");
-                return;
-            }
+                clienteBLL.Actualizar(LeerFormulario());
 
-            bool editado = controller.Editar(idSeleccionado, txtNombre.Text, txtTelefono.Text, txtCorreo.Text);
-
-            if (editado)
-            {
-                MessageBox.Show("Cliente actualizado.");
+                Mensajes.Info("Cliente actualizado.");
                 ActualizarTabla();
                 Limpiar();
             }
-            else
+            catch (ValidacionException ex)
             {
-                MessageBox.Show("No se pudo actualizar. Revise que el nombre no esté vacío.");
+                Mensajes.Advertencia(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Mensajes.Error(ex);
             }
         }
 
@@ -84,32 +112,50 @@ namespace SIGIVE.Views
         {
             if (idSeleccionado == -1)
             {
-                MessageBox.Show("Seleccione un cliente de la tabla.");
+                Mensajes.Advertencia("Seleccione un cliente de la tabla.");
                 return;
             }
 
-            DialogResult respuesta = MessageBox.Show("¿Desea eliminar este cliente?", "Confirmar", MessageBoxButtons.YesNo);
-
-            if (respuesta == DialogResult.Yes)
+            if (Mensajes.Confirmar("¿Desea eliminar este cliente?") == false)
             {
-                controller.Eliminar(idSeleccionado);
+                return;
+            }
+
+            try
+            {
+                clienteBLL.Eliminar(idSeleccionado);
                 ActualizarTabla();
                 Limpiar();
+            }
+            catch (ValidacionException ex)
+            {
+                Mensajes.Advertencia(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Mensajes.Error(ex);
             }
         }
 
         private void btnVerInfo_Click(object sender, EventArgs e)
         {
-            Cliente cliente = controller.BuscarPorId(idSeleccionado);
-
-            if (cliente == null)
+            try
             {
-                MessageBox.Show("Seleccione un cliente de la tabla.");
-                return;
-            }
+                ClienteDTO? cliente = clienteBLL.BuscarPorId(idSeleccionado);
 
-            // Usa el método que Cliente implementa desde la clase abstracta Persona
-            MessageBox.Show(cliente.ObtenerInformacion(), "Información del cliente");
+                if (cliente == null)
+                {
+                    Mensajes.Advertencia("Seleccione un cliente de la tabla.");
+                    return;
+                }
+
+                // Usa el método que ClienteDTO implementa desde la clase abstracta Persona
+                MessageBox.Show(cliente.ObtenerInformacion(), "Información del cliente");
+            }
+            catch (Exception ex)
+            {
+                Mensajes.Error(ex);
+            }
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
@@ -125,7 +171,7 @@ namespace SIGIVE.Views
                 return;
             }
 
-            Cliente cliente = (Cliente)dgvClientes.Rows[e.RowIndex].DataBoundItem;
+            ClienteDTO cliente = (ClienteDTO)dgvClientes.Rows[e.RowIndex].DataBoundItem;
 
             idSeleccionado = cliente.Id;
             txtNombre.Text = cliente.Nombre;

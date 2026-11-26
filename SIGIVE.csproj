@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="Controllers\" />
+    <!-- Conector de MySQL para ADO.NET (MySqlConnection, MySqlCommand, MySqlDataReader) -->
+    <PackageReference Include="MySql.Data" Version="26.10.0" />
   </ItemGroup>
 
 </Project>

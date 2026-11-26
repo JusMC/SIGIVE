@@ -1,4 +1,4 @@
-using SIGIVE.Controllers;
+using SIGIVE.DAL;
 
 namespace SIGIVE.Views
 {
@@ -7,31 +7,45 @@ namespace SIGIVE.Views
     /// </summary>
     public partial class FormPrincipal : Form
     {
-        // Los controladores se crean una sola vez aquí,
-        // para que todos los formularios compartan los mismos datos
-        private ClienteController clienteController;
-
         // Constructor
         public FormPrincipal()
         {
             InitializeComponent();
-            clienteController = new ClienteController();
+        }
+
+        // Al abrir el programa se revisa si hay conexión con MySQL
+        private void FormPrincipal_Load(object sender, EventArgs e)
+        {
+            if (ConexionBD.ProbarConexion() == false)
+            {
+                Mensajes.Advertencia("No se pudo conectar a la base de datos.\n" +
+                                     "Revise que MySQL esté encendido y la cadena de conexión en DAL/ConexionBD.cs.");
+            }
         }
 
         private void btnClientes_Click(object sender, EventArgs e)
         {
-            FormClientes form = new FormClientes(clienteController);
-            form.ShowDialog();
+            // using: libera el formulario cuando se cierra
+            using (FormClientes form = new FormClientes())
+            {
+                form.ShowDialog();
+            }
         }
 
         private void btnProductos_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Módulo de productos en desarrollo.");
+            using (FormProductos form = new FormProductos())
+            {
+                form.ShowDialog();
+            }
         }
 
         private void btnVentas_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Módulo de ventas en desarrollo.");
+            using (FormVentas form = new FormVentas())
+            {
+                form.ShowDialog();
+            }
         }
 
         private void btnSalir_Click(object sender, EventArgs e)

@@ -1,18 +1,18 @@
-namespace SIGIVE.Models
+namespace SIGIVE.DTO
 {
     /// <summary>
-    ///     Representa a un cliente que realiza las compras en el sistema.
+    ///     DTO de cliente: transporta los datos de un cliente entre las capas.
+    ///     Hereda de Persona (Id, Nombre, Telefono, Correo).
     /// </summary>
-    public class Cliente : Persona
+    public class ClienteDTO : Persona
     {
-
-        // Constructor vacío para  JSON
-        public Cliente()
+        // Constructor vacío
+        public ClienteDTO()
         {
         }
 
-        // Constructor
-        public Cliente(int id, string nombre, string telefono, string correo)
+        // Constructor con datos: se los pasa a la clase base Persona
+        public ClienteDTO(int id, string nombre, string telefono, string correo)
             : base(id, nombre, telefono, correo)
         {
         }
@@ -26,7 +26,7 @@ namespace SIGIVE.Models
         }
 
         /// <summary>
-        ///     Texto que se muestra cuando el cliente aparece en un ComboBox o lista.
+        ///     Texto que se muestra cuando el cliente aparece en un ComboBox.
         /// </summary>
         public override string ToString()
         {

@@ -111,6 +111,7 @@ namespace SIGIVE.Views
             Name = "FormPrincipal";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "SIGIVE - Menú principal";
+            Load += FormPrincipal_Load;
             ResumeLayout(false);
             PerformLayout();
         }

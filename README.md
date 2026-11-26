@@ -21,6 +21,25 @@ Sistema de ventas desarrollado en C# que permite gestionar productos, clientes y
 - WinForms
 - Git / GitHub
 
+## Cómo ejecutarlo
+
+1. Ejecutar `database/schema.sql` en MySQL Workbench (crea la base `sistema_ventas` con datos de prueba).
+2. Cambiar `Uid` y `Pwd` en `DAL/ConexionBD.cs` según su MySQL.
+3. Abrir `SIGIVE.slnx` en Visual Studio y ejecutar.
+
+## Estructura (arquitectura en capas)
+
+| Carpeta        | Capa                   | Qué hace                                                    |
+|----------------|------------------------|-------------------------------------------------------------|
+| `Views/`       | Presentación (UI)      | Formularios WinForms; solo piden datos y muestran mensajes  |
+| `BLL/`         | Negocio                | Validaciones, cálculos (LINQ) y reglas del sistema          |
+| `DAL/`         | Datos                  | DAO con consultas SQL parametrizadas (ADO.NET + MySQL)      |
+| `DTO/`         | Objetos de transferencia | Clases que llevan los datos entre capas                   |
+| `Excepciones/` | —                      | Excepciones personalizadas (`ValidacionException`, etc.)    |
+| `Utilidades/`  | —                      | `Logger`: guarda errores en `errores.log`                   |
+
+Flujo: `Views → BLL → DAL → MySQL`
+
 ## Funcionalidades
 
 - CRUD de productos (código, nombre, descripción, precio, stock)

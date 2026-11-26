@@ -71,3 +71,22 @@ CREATE TABLE IF NOT EXISTS detalle_venta (
     CONSTRAINT fk_detalle_producto
         FOREIGN KEY (producto_codigo) REFERENCES productos(codigo)
 );
+
+-- =====================================================
+-- Datos de prueba (ejecutar UNA sola vez, después de crear las tablas)
+-- =====================================================
+INSERT INTO categorias (nombre, descripcion) VALUES
+    ('Bebidas', 'Refrescos, jugos y agua'),
+    ('Snacks', 'Golosinas y bocadillos'),
+    ('Limpieza', 'Productos de limpieza');
+
+INSERT INTO productos (codigo, nombre, descripcion, precio, stock, categoria_id) VALUES
+    ('P001', 'Agua 600ml', 'Botella de agua', 500.00, 50, 1),
+    ('P002', 'Refresco 2L', 'Gaseosa sabor cola', 1500.00, 30, 1),
+    ('P003', 'Papas fritas', 'Bolsa mediana', 900.00, 40, 2),
+    ('P004', 'Jabón líquido', 'Botella 1L', 2200.00, 15, 3);
+
+INSERT INTO clientes (nombre, telefono, correo) VALUES
+    ('Cliente Contado', NULL, NULL),
+    ('María Rodríguez', '8888-1111', 'maria@correo.com'),
+    ('Carlos Jiménez', '8888-2222', 'carlos@correo.com');
