@@ -11,6 +11,12 @@
   <ItemGroup>
     <!-- Conector de MySQL para ADO.NET (MySqlConnection, MySqlCommand, MySqlDataReader) -->
     <PackageReference Include="MySql.Data" Version="26.10.0" />
+
+    <!-- Reportes: exportar a Excel (.xlsx) -->
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
+
+    <!-- Reportes: exportar a PDF (licencia Community, gratuita para uso académico) -->
+    <PackageReference Include="QuestPDF" Version="2026.9.2" />
   </ItemGroup>
 
 </Project>

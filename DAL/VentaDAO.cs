@@ -10,6 +10,12 @@ namespace SIGIVE.DAL
     /// </summary>
     public class VentaDAO : IVentaRepositorio
     {
+        // Consulta base de los detalles: trae también el nombre del producto
+        private const string SelectDetalle =
+            "SELECT d.id, d.venta_id, d.producto_codigo, p.nombre AS producto_nombre, " +
+            "d.cantidad, d.precio_unitario, d.subtotal " +
+            "FROM detalle_venta d INNER JOIN productos p ON p.codigo = d.producto_codigo ";
+
         /// <summary>
         ///     Guarda la venta completa. Usa una transacción: o se guarda TODO
         ///     (venta, detalles y stock) o no se guarda NADA si algo falla.
@@ -120,10 +126,7 @@ namespace SIGIVE.DAL
             using (MySqlConnection conn = ConexionBD.ObtenerConexion())
             {
                 conn.Open();
-                string query = "SELECT d.id, d.venta_id, d.producto_codigo, p.nombre AS producto_nombre, " +
-                               "d.cantidad, d.precio_unitario, d.subtotal " +
-                               "FROM detalle_venta d INNER JOIN productos p ON p.codigo = d.producto_codigo " +
-                               "WHERE d.venta_id = @venta";
+                string query = SelectDetalle + "WHERE d.venta_id = @venta";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
@@ -133,21 +136,55 @@ namespace SIGIVE.DAL
                     {
                         while (dr.Read())
                         {
-                            DetalleVentaDTO detalle = new DetalleVentaDTO();
-                            detalle.Id = Convert.ToInt32(dr["id"]);
-                            detalle.VentaId = Convert.ToInt32(dr["venta_id"]);
-                            detalle.ProductoCodigo = dr["producto_codigo"].ToString() ?? "";
-                            detalle.ProductoNombre = dr["producto_nombre"].ToString() ?? "";
-                            detalle.Cantidad = Convert.ToInt32(dr["cantidad"]);
-                            detalle.PrecioUnitario = Convert.ToDecimal(dr["precio_unitario"]);
-                            detalle.Subtotal = Convert.ToDecimal(dr["subtotal"]);
-                            lista.Add(detalle);
+                            lista.Add(LeerDetalle(dr));
                         }
                     }
                 }
             }
 
             return lista;
+        }
+
+        /// <summary>
+        ///     SELECT: devuelve los detalles de TODAS las ventas en una sola consulta
+        ///     (para los reportes; así no se hace una consulta por cada venta).
+        /// </summary>
+        public List<DetalleVentaDTO> ObtenerTodosLosDetalles()
+        {
+            List<DetalleVentaDTO> lista = new List<DetalleVentaDTO>();
+
+            using (MySqlConnection conn = ConexionBD.ObtenerConexion())
+            {
+                conn.Open();
+                string query = SelectDetalle + "ORDER BY d.venta_id";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                using (MySqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        lista.Add(LeerDetalle(dr));
+                    }
+                }
+            }
+
+            return lista;
+        }
+
+        /// <summary>
+        ///     Convierte la fila actual del reader en un DetalleVentaDTO.
+        /// </summary>
+        private DetalleVentaDTO LeerDetalle(MySqlDataReader dr)
+        {
+            DetalleVentaDTO detalle = new DetalleVentaDTO();
+            detalle.Id = Convert.ToInt32(dr["id"]);
+            detalle.VentaId = Convert.ToInt32(dr["venta_id"]);
+            detalle.ProductoCodigo = dr["producto_codigo"].ToString() ?? "";
+            detalle.ProductoNombre = dr["producto_nombre"].ToString() ?? "";
+            detalle.Cantidad = Convert.ToInt32(dr["cantidad"]);
+            detalle.PrecioUnitario = Convert.ToDecimal(dr["precio_unitario"]);
+            detalle.Subtotal = Convert.ToDecimal(dr["subtotal"]);
+            return detalle;
         }
     }
 }

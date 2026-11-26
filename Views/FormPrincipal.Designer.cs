@@ -33,6 +33,7 @@ namespace SIGIVE.Views
             btnClientes = new Button();
             btnProductos = new Button();
             btnVentas = new Button();
+            btnReportes = new Button();
             btnSalir = new Button();
             SuspendLayout();
             // 
@@ -85,12 +86,22 @@ namespace SIGIVE.Views
             btnVentas.UseVisualStyleBackColor = true;
             btnVentas.Click += btnVentas_Click;
             // 
+            // btnReportes
+            // 
+            btnReportes.Location = new Point(333, 301);
+            btnReportes.Name = "btnReportes";
+            btnReportes.Size = new Size(190, 40);
+            btnReportes.TabIndex = 5;
+            btnReportes.Text = "Reportes";
+            btnReportes.UseVisualStyleBackColor = true;
+            btnReportes.Click += btnReportes_Click;
+            // 
             // btnSalir
             // 
-            btnSalir.Location = new Point(333, 311);
+            btnSalir.Location = new Point(333, 361);
             btnSalir.Name = "btnSalir";
             btnSalir.Size = new Size(190, 40);
-            btnSalir.TabIndex = 5;
+            btnSalir.TabIndex = 6;
             btnSalir.Text = "Salir";
             btnSalir.UseVisualStyleBackColor = true;
             btnSalir.Click += btnSalir_Click;
@@ -99,12 +110,13 @@ namespace SIGIVE.Views
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(836, 433);
+            ClientSize = new Size(836, 453);
             Controls.Add(lblTitulo);
             Controls.Add(lblSubtitulo);
             Controls.Add(btnClientes);
             Controls.Add(btnProductos);
             Controls.Add(btnVentas);
+            Controls.Add(btnReportes);
             Controls.Add(btnSalir);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
@@ -123,6 +135,7 @@ namespace SIGIVE.Views
         private Button btnClientes;
         private Button btnProductos;
         private Button btnVentas;
+        private Button btnReportes;
         private Button btnSalir;
     }
 }

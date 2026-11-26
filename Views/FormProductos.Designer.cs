@@ -43,7 +43,7 @@ namespace SIGIVE.Views
             cboCategoria = new ComboBox();
             txtBuscar = new TextBox();
             btnAgregar = new Button();
-            btnEditar = new Button();
+            btnActualizar = new Button();
             btnEliminar = new Button();
             btnLimpiar = new Button();
             btnBuscar = new Button();
@@ -167,15 +167,15 @@ namespace SIGIVE.Views
             btnAgregar.UseVisualStyleBackColor = true;
             btnAgregar.Click += btnAgregar_Click;
             //
-            // btnEditar
+            // btnActualizar
             //
-            btnEditar.Location = new Point(410, 58);
-            btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(130, 32);
-            btnEditar.TabIndex = 13;
-            btnEditar.Text = "Editar";
-            btnEditar.UseVisualStyleBackColor = true;
-            btnEditar.Click += btnEditar_Click;
+            btnActualizar.Location = new Point(410, 58);
+            btnActualizar.Name = "btnActualizar";
+            btnActualizar.Size = new Size(130, 32);
+            btnActualizar.TabIndex = 13;
+            btnActualizar.Text = "Actualizar";
+            btnActualizar.UseVisualStyleBackColor = true;
+            btnActualizar.Click += btnActualizar_Click;
             //
             // btnEliminar
             //
@@ -259,7 +259,7 @@ namespace SIGIVE.Views
             Controls.Add(lblCategoria);
             Controls.Add(cboCategoria);
             Controls.Add(btnAgregar);
-            Controls.Add(btnEditar);
+            Controls.Add(btnActualizar);
             Controls.Add(btnEliminar);
             Controls.Add(btnLimpiar);
             Controls.Add(lblBuscar);
@@ -295,7 +295,7 @@ namespace SIGIVE.Views
         private ComboBox cboCategoria;
         private TextBox txtBuscar;
         private Button btnAgregar;
-        private Button btnEditar;
+        private Button btnActualizar;
         private Button btnEliminar;
         private Button btnLimpiar;
         private Button btnBuscar;

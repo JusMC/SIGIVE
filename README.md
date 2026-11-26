@@ -20,6 +20,7 @@ Sistema de ventas desarrollado en C# que permite gestionar productos, clientes y
 - MySQL
 - WinForms
 - Git / GitHub
+- ClosedXML (exportar a Excel) y QuestPDF (exportar a PDF, licencia Community)
 
 ## Cómo ejecutarlo
 
@@ -32,12 +33,13 @@ Sistema de ventas desarrollado en C# que permite gestionar productos, clientes y
 | Carpeta        | Capa                   | Qué hace                                                    |
 |----------------|------------------------|-------------------------------------------------------------|
 | `Views/`       | Presentación (UI)      | Formularios WinForms; solo piden datos y muestran mensajes  |
+| `Views/Controles/` | Presentación (UI)  | Controles propios (`GraficoBarras` para el dashboard)       |
 | `BLL/`         | Negocio                | Validaciones, cálculos (LINQ) y reglas del sistema          |
 | `DAL/`         | Datos                  | DAO con consultas SQL parametrizadas (ADO.NET + MySQL)      |
 | `DAL/Interfaces/` | Datos (contratos)   | Interfaces de repositorio (`IProductoRepositorio`, etc.)    |
 | `DTO/`         | Objetos de transferencia | Clases que llevan los datos entre capas                   |
 | `Excepciones/` | —                      | Excepciones personalizadas (`ValidacionException`, etc.)    |
-| `Utilidades/`  | —                      | `Logger`: guarda errores en `errores.log`                   |
+| `Utilidades/`  | —                      | `Logger` (errores en `errores.log`) y exportadores a Excel/PDF |
 
 Flujo: `Views → BLL → IRepositorio (DAO) → MySQL`
 
@@ -53,4 +55,10 @@ Flujo: `Views → BLL → IRepositorio (DAO) → MySQL`
 - CRUD de productos (código, nombre, descripción, precio, stock)
 - CRUD de clientes (ID, nombre, teléfono, correo electrónico)
 - Registro de ventas con detalle de productos, cantidades y total
-- Reportes de ventas, productos y clientes con exportación a PDF y Excel
+- Reportes (menú **Reportes**), filtrados por rango de fechas:
+  - **Ventas:** filtro por cliente, detalle de la venta seleccionada y total
+  - **Productos:** inventario, con filtro de stock bajo (filas en rojo) y valor del inventario
+  - **Más vendidos:** unidades y dinero por producto
+  - **Clientes:** compras y total gastado por cliente
+  - **Dashboard:** total de ventas, total vendido, promedio por venta, productos con stock bajo y gráficos de ventas por día y top 5 productos
+  - Exportación de cualquier tabla a **Excel (.xlsx)** y **PDF**

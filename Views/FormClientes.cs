@@ -5,7 +5,7 @@ using SIGIVE.Excepciones;
 namespace SIGIVE.Views
 {
     /// <summary>
-    ///     Formulario para administrar clientes (agregar, editar, eliminar y listar).
+    ///     Formulario para administrar clientes (agregar, actualizar, eliminar y listar).
     ///     Solo pide datos y muestra mensajes; las validaciones las hace ClienteBLL.
     /// </summary>
     public partial class FormClientes : Form
@@ -88,7 +88,7 @@ namespace SIGIVE.Views
             }
         }
 
-        private void btnEditar_Click(object sender, EventArgs e)
+        private void btnActualizar_Click(object sender, EventArgs e)
         {
             try
             {

@@ -48,6 +48,14 @@ namespace SIGIVE.Views
             }
         }
 
+        private void btnReportes_Click(object sender, EventArgs e)
+        {
+            using (FormReportes form = new FormReportes())
+            {
+                form.ShowDialog();
+            }
+        }
+
         private void btnSalir_Click(object sender, EventArgs e)
         {
             Application.Exit();

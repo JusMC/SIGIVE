@@ -22,5 +22,10 @@ namespace SIGIVE.DAL.Interfaces
         ///     Devuelve los productos vendidos en una venta.
         /// </summary>
         List<DetalleVentaDTO> ObtenerDetalles(int ventaId);
+
+        /// <summary>
+        ///     Devuelve los detalles de todas las ventas (para reportes).
+        /// </summary>
+        List<DetalleVentaDTO> ObtenerTodosLosDetalles();
     }
 }

@@ -5,7 +5,7 @@ using SIGIVE.Excepciones;
 namespace SIGIVE.Views
 {
     /// <summary>
-    ///     Formulario para administrar productos (agregar, editar, eliminar, buscar y listar).
+    ///     Formulario para administrar productos (agregar, actualizar, eliminar, buscar y listar).
     /// </summary>
     public partial class FormProductos : Form
     {
@@ -138,7 +138,7 @@ namespace SIGIVE.Views
             }
         }
 
-        private void btnEditar_Click(object sender, EventArgs e)
+        private void btnActualizar_Click(object sender, EventArgs e)
         {
             if (codigoSeleccionado == "")
             {
@@ -222,7 +222,7 @@ namespace SIGIVE.Views
 
             codigoSeleccionado = producto.Codigo;
             txtCodigo.Text = producto.Codigo;
-            txtCodigo.ReadOnly = true; // el código no se puede cambiar al editar
+            txtCodigo.ReadOnly = true; // el código no se puede cambiar al actualizar
             txtNombre.Text = producto.Nombre;
             txtDescripcion.Text = producto.Descripcion;
             nudPrecio.Value = producto.Precio;

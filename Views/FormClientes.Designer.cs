@@ -35,7 +35,7 @@ namespace SIGIVE.Views
             txtTelefono = new TextBox();
             txtCorreo = new TextBox();
             btnAgregar = new Button();
-            btnEditar = new Button();
+            btnActualizar = new Button();
             btnEliminar = new Button();
             btnVerInfo = new Button();
             btnLimpiar = new Button();
@@ -101,15 +101,15 @@ namespace SIGIVE.Views
             btnAgregar.UseVisualStyleBackColor = true;
             btnAgregar.Click += btnAgregar_Click;
             //
-            // btnEditar
+            // btnActualizar
             //
-            btnEditar.Location = new Point(400, 58);
-            btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(130, 32);
-            btnEditar.TabIndex = 7;
-            btnEditar.Text = "Editar";
-            btnEditar.UseVisualStyleBackColor = true;
-            btnEditar.Click += btnEditar_Click;
+            btnActualizar.Location = new Point(400, 58);
+            btnActualizar.Name = "btnActualizar";
+            btnActualizar.Size = new Size(130, 32);
+            btnActualizar.TabIndex = 7;
+            btnActualizar.Text = "Actualizar";
+            btnActualizar.UseVisualStyleBackColor = true;
+            btnActualizar.Click += btnActualizar_Click;
             //
             // btnEliminar
             //
@@ -170,7 +170,7 @@ namespace SIGIVE.Views
             Controls.Add(lblCorreo);
             Controls.Add(txtCorreo);
             Controls.Add(btnAgregar);
-            Controls.Add(btnEditar);
+            Controls.Add(btnActualizar);
             Controls.Add(btnEliminar);
             Controls.Add(btnVerInfo);
             Controls.Add(btnLimpiar);
@@ -194,7 +194,7 @@ namespace SIGIVE.Views
         private TextBox txtTelefono;
         private TextBox txtCorreo;
         private Button btnAgregar;
-        private Button btnEditar;
+        private Button btnActualizar;
         private Button btnEliminar;
         private Button btnVerInfo;
         private Button btnLimpiar;
