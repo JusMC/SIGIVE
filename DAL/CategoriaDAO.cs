@@ -1,4 +1,5 @@
 using MySql.Data.MySqlClient;
+using SIGIVE.DAL.Interfaces;
 using SIGIVE.DTO;
 
 namespace SIGIVE.DAL
@@ -6,7 +7,7 @@ namespace SIGIVE.DAL
     /// <summary>
     ///     DAO de categorías: consultas SQL de la tabla categorias.
     /// </summary>
-    public class CategoriaDAO
+    public class CategoriaDAO : ICategoriaRepositorio
     {
         /// <summary>
         ///     SELECT: devuelve todas las categorías ordenadas por nombre.

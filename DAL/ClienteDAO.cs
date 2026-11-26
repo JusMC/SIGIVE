@@ -1,4 +1,5 @@
 using MySql.Data.MySqlClient;
+using SIGIVE.DAL.Interfaces;
 using SIGIVE.DTO;
 
 namespace SIGIVE.DAL
@@ -7,7 +8,7 @@ namespace SIGIVE.DAL
     ///     DAO de clientes: aquí van SOLO las consultas SQL de la tabla clientes.
     ///     No valida nada (eso lo hace la capa de negocio).
     /// </summary>
-    public class ClienteDAO
+    public class ClienteDAO : IClienteRepositorio
     {
         /// <summary>
         ///     INSERT: guarda un cliente nuevo y le pone el Id que generó MySQL.

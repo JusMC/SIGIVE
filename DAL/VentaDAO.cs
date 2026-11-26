@@ -1,4 +1,5 @@
 using MySql.Data.MySqlClient;
+using SIGIVE.DAL.Interfaces;
 using SIGIVE.DTO;
 using SIGIVE.Excepciones;
 
@@ -7,7 +8,7 @@ namespace SIGIVE.DAL
     /// <summary>
     ///     DAO de ventas: guarda la venta (cabecera + detalles) y descuenta el stock.
     /// </summary>
-    public class VentaDAO
+    public class VentaDAO : IVentaRepositorio
     {
         /// <summary>
         ///     Guarda la venta completa. Usa una transacción: o se guarda TODO

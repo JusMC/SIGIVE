@@ -1,4 +1,5 @@
 using SIGIVE.DAL;
+using SIGIVE.DAL.Interfaces;
 using SIGIVE.DTO;
 using SIGIVE.Excepciones;
 
@@ -9,11 +10,23 @@ namespace SIGIVE.BLL
     /// </summary>
     public class CategoriaBLL
     {
-        private CategoriaDAO categoriaDAO;
+        // Se guarda la INTERFAZ, no la clase concreta: así la BLL no depende de MySQL
+        private ICategoriaRepositorio categoriaRepositorio;
 
-        public CategoriaBLL()
+        /// <summary>
+        ///     Constructor normal: pide el repositorio a la fábrica (patrón Factory).
+        /// </summary>
+        public CategoriaBLL() : this(FabricaRepositorios.CrearCategoriaRepositorio())
         {
-            categoriaDAO = new CategoriaDAO();
+        }
+
+        /// <summary>
+        ///     Constructor que recibe el repositorio de categorías ya creado.
+        ///     Sirve para las pruebas unitarias: se le pasa un repositorio en memoria en vez de MySQL.
+        /// </summary>
+        public CategoriaBLL(ICategoriaRepositorio categoriaRepositorio)
+        {
+            this.categoriaRepositorio = categoriaRepositorio;
         }
 
         /// <summary>
@@ -21,7 +34,7 @@ namespace SIGIVE.BLL
         /// </summary>
         public List<CategoriaDTO> ObtenerTodas()
         {
-            return categoriaDAO.ObtenerTodas();
+            return categoriaRepositorio.ObtenerTodas();
         }
 
         /// <summary>
@@ -37,13 +50,13 @@ namespace SIGIVE.BLL
             }
 
             // LINQ: no permitir dos categorías con el mismo nombre
-            bool repetida = categoriaDAO.ObtenerTodas().Any(c => c.Nombre.ToLower() == categoria.Nombre.ToLower());
+            bool repetida = categoriaRepositorio.ObtenerTodas().Any(c => c.Nombre.ToLower() == categoria.Nombre.ToLower());
             if (repetida)
             {
                 throw new ValidacionException("Ya existe una categoría con ese nombre.");
             }
 
-            categoriaDAO.Insertar(categoria);
+            categoriaRepositorio.Insertar(categoria);
         }
 
         // PENDIENTE: Actualizar y Eliminar (cuando se haga el formulario de categorías)

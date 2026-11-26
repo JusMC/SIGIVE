@@ -1,4 +1,5 @@
 using SIGIVE.DAL;
+using SIGIVE.DAL.Interfaces;
 using SIGIVE.DTO;
 using SIGIVE.Excepciones;
 
@@ -10,11 +11,23 @@ namespace SIGIVE.BLL
     /// </summary>
     public class VentaBLL
     {
-        private VentaDAO ventaDAO;
+        // Se guarda la INTERFAZ, no la clase concreta: así la BLL no depende de MySQL
+        private IVentaRepositorio ventaRepositorio;
 
-        public VentaBLL()
+        /// <summary>
+        ///     Constructor normal: pide el repositorio a la fábrica (patrón Factory).
+        /// </summary>
+        public VentaBLL() : this(FabricaRepositorios.CrearVentaRepositorio())
         {
-            ventaDAO = new VentaDAO();
+        }
+
+        /// <summary>
+        ///     Constructor que recibe el repositorio de ventas ya creado.
+        ///     Sirve para las pruebas unitarias: se le pasa un repositorio en memoria en vez de MySQL.
+        /// </summary>
+        public VentaBLL(IVentaRepositorio ventaRepositorio)
+        {
+            this.ventaRepositorio = ventaRepositorio;
         }
 
         /// <summary>
@@ -94,7 +107,7 @@ namespace SIGIVE.BLL
         }
 
         /// <summary>
-        ///     Valida y guarda la venta. El DAO descuenta el stock en la base de datos.
+        ///     Valida y guarda la venta. El repositorio descuenta el stock en la base de datos.
         /// </summary>
         public void Registrar(VentaDTO venta)
         {
@@ -111,7 +124,7 @@ namespace SIGIVE.BLL
             venta.Fecha = DateTime.Now;
             venta.Total = CalcularTotal(venta);
 
-            ventaDAO.Registrar(venta);
+            ventaRepositorio.Registrar(venta);
         }
 
         /// <summary>
@@ -119,7 +132,7 @@ namespace SIGIVE.BLL
         /// </summary>
         public List<VentaDTO> ObtenerTodas()
         {
-            return ventaDAO.ObtenerTodas();
+            return ventaRepositorio.ObtenerTodas();
         }
 
         /// <summary>
@@ -127,7 +140,7 @@ namespace SIGIVE.BLL
         /// </summary>
         public List<DetalleVentaDTO> ObtenerDetalles(int ventaId)
         {
-            return ventaDAO.ObtenerDetalles(ventaId);
+            return ventaRepositorio.ObtenerDetalles(ventaId);
         }
 
         /// <summary>
@@ -135,7 +148,7 @@ namespace SIGIVE.BLL
         /// </summary>
         public decimal CalcularTotalVendido()
         {
-            return ventaDAO.ObtenerTodas().Sum(v => v.Total);
+            return ventaRepositorio.ObtenerTodas().Sum(v => v.Total);
         }
 
         /// <summary>
@@ -143,7 +156,7 @@ namespace SIGIVE.BLL
         /// </summary>
         public List<VentaDTO> ObtenerPorCliente(int clienteId)
         {
-            return ventaDAO.ObtenerTodas()
+            return ventaRepositorio.ObtenerTodas()
                 .Where(v => v.ClienteId == clienteId)
                 .ToList();
         }

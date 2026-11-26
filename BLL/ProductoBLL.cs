@@ -1,20 +1,33 @@
 using MySql.Data.MySqlClient;
 using SIGIVE.DAL;
+using SIGIVE.DAL.Interfaces;
 using SIGIVE.DTO;
 using SIGIVE.Excepciones;
 
 namespace SIGIVE.BLL
 {
     /// <summary>
-    ///     Capa de negocio de productos: valida los datos y luego llama al DAO.
+    ///     Capa de negocio de productos: valida los datos y luego llama al repositorio.
     /// </summary>
     public class ProductoBLL
     {
-        private ProductoDAO productoDAO;
+        // Se guarda la INTERFAZ, no la clase concreta: así la BLL no depende de MySQL
+        private IProductoRepositorio productoRepositorio;
 
-        public ProductoBLL()
+        /// <summary>
+        ///     Constructor normal: pide el repositorio a la fábrica (patrón Factory).
+        /// </summary>
+        public ProductoBLL() : this(FabricaRepositorios.CrearProductoRepositorio())
         {
-            productoDAO = new ProductoDAO();
+        }
+
+        /// <summary>
+        ///     Constructor que recibe el repositorio de productos ya creado.
+        ///     Sirve para las pruebas unitarias: se le pasa un repositorio en memoria en vez de MySQL.
+        /// </summary>
+        public ProductoBLL(IProductoRepositorio productoRepositorio)
+        {
+            this.productoRepositorio = productoRepositorio;
         }
 
         /// <summary>
@@ -22,7 +35,7 @@ namespace SIGIVE.BLL
         /// </summary>
         public List<ProductoDTO> ObtenerTodos()
         {
-            return productoDAO.ObtenerTodos();
+            return productoRepositorio.ObtenerTodos();
         }
 
         /// <summary>
@@ -37,7 +50,7 @@ namespace SIGIVE.BLL
                 return ObtenerTodos();
             }
 
-            return productoDAO.ObtenerTodos()
+            return productoRepositorio.ObtenerTodos()
                 .Where(p => p.Nombre.ToLower().Contains(texto) || p.Codigo.ToLower().Contains(texto))
                 .ToList();
         }
@@ -47,7 +60,7 @@ namespace SIGIVE.BLL
         /// </summary>
         public List<ProductoDTO> ObtenerConStock()
         {
-            return productoDAO.ObtenerTodos()
+            return productoRepositorio.ObtenerTodos()
                 .Where(p => p.Stock > 0)
                 .ToList();
         }
@@ -60,12 +73,12 @@ namespace SIGIVE.BLL
             LimpiarEspacios(producto);
             Validar(producto);
 
-            if (productoDAO.ObtenerPorCodigo(producto.Codigo) != null)
+            if (productoRepositorio.ObtenerPorCodigo(producto.Codigo) != null)
             {
                 throw new ValidacionException("Ya existe un producto con el código " + producto.Codigo + ".");
             }
 
-            productoDAO.Insertar(producto);
+            productoRepositorio.Insertar(producto);
         }
 
         /// <summary>
@@ -76,7 +89,7 @@ namespace SIGIVE.BLL
             LimpiarEspacios(producto);
             Validar(producto);
 
-            if (productoDAO.Actualizar(producto) == false)
+            if (productoRepositorio.Actualizar(producto) == false)
             {
                 throw new ValidacionException("El producto ya no existe.");
             }
@@ -94,7 +107,7 @@ namespace SIGIVE.BLL
 
             try
             {
-                productoDAO.Eliminar(codigo);
+                productoRepositorio.Eliminar(codigo);
             }
             catch (MySqlException ex)
             {

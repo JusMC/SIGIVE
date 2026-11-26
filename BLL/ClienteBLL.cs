@@ -1,20 +1,33 @@
 using MySql.Data.MySqlClient;
 using SIGIVE.DAL;
+using SIGIVE.DAL.Interfaces;
 using SIGIVE.DTO;
 using SIGIVE.Excepciones;
 
 namespace SIGIVE.BLL
 {
     /// <summary>
-    ///     Capa de negocio de clientes: valida los datos y luego llama al DAO.
+    ///     Capa de negocio de clientes: valida los datos y luego llama al repositorio.
     /// </summary>
     public class ClienteBLL
     {
-        private ClienteDAO clienteDAO;
+        // Se guarda la INTERFAZ, no la clase concreta: así la BLL no depende de MySQL
+        private IClienteRepositorio clienteRepositorio;
 
-        public ClienteBLL()
+        /// <summary>
+        ///     Constructor normal: pide el repositorio a la fábrica (patrón Factory).
+        /// </summary>
+        public ClienteBLL() : this(FabricaRepositorios.CrearClienteRepositorio())
         {
-            clienteDAO = new ClienteDAO();
+        }
+
+        /// <summary>
+        ///     Constructor que recibe el repositorio de clientes ya creado.
+        ///     Sirve para las pruebas unitarias: se le pasa un repositorio en memoria en vez de MySQL.
+        /// </summary>
+        public ClienteBLL(IClienteRepositorio clienteRepositorio)
+        {
+            this.clienteRepositorio = clienteRepositorio;
         }
 
         /// <summary>
@@ -22,7 +35,7 @@ namespace SIGIVE.BLL
         /// </summary>
         public List<ClienteDTO> ObtenerTodos()
         {
-            return clienteDAO.ObtenerTodos();
+            return clienteRepositorio.ObtenerTodos();
         }
 
         /// <summary>
@@ -30,7 +43,7 @@ namespace SIGIVE.BLL
         /// </summary>
         public ClienteDTO? BuscarPorId(int id)
         {
-            return clienteDAO.ObtenerPorId(id);
+            return clienteRepositorio.ObtenerPorId(id);
         }
 
         /// <summary>
@@ -40,7 +53,7 @@ namespace SIGIVE.BLL
         {
             LimpiarEspacios(cliente);
             Validar(cliente);
-            clienteDAO.Insertar(cliente);
+            clienteRepositorio.Insertar(cliente);
         }
 
         /// <summary>
@@ -56,7 +69,7 @@ namespace SIGIVE.BLL
             LimpiarEspacios(cliente);
             Validar(cliente);
 
-            if (clienteDAO.Actualizar(cliente) == false)
+            if (clienteRepositorio.Actualizar(cliente) == false)
             {
                 throw new ValidacionException("El cliente ya no existe.");
             }
@@ -74,7 +87,7 @@ namespace SIGIVE.BLL
 
             try
             {
-                clienteDAO.Eliminar(id);
+                clienteRepositorio.Eliminar(id);
             }
             catch (MySqlException ex)
             {
@@ -116,7 +129,7 @@ namespace SIGIVE.BLL
                 }
 
                 // LINQ: revisar que ningún OTRO cliente tenga el mismo correo
-                bool correoRepetido = clienteDAO.ObtenerTodos()
+                bool correoRepetido = clienteRepositorio.ObtenerTodos()
                     .Any(c => c.Correo.ToLower() == cliente.Correo.ToLower() && c.Id != cliente.Id);
 
                 if (correoRepetido)

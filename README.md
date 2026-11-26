@@ -34,11 +34,19 @@ Sistema de ventas desarrollado en C# que permite gestionar productos, clientes y
 | `Views/`       | Presentación (UI)      | Formularios WinForms; solo piden datos y muestran mensajes  |
 | `BLL/`         | Negocio                | Validaciones, cálculos (LINQ) y reglas del sistema          |
 | `DAL/`         | Datos                  | DAO con consultas SQL parametrizadas (ADO.NET + MySQL)      |
+| `DAL/Interfaces/` | Datos (contratos)   | Interfaces de repositorio (`IProductoRepositorio`, etc.)    |
 | `DTO/`         | Objetos de transferencia | Clases que llevan los datos entre capas                   |
 | `Excepciones/` | —                      | Excepciones personalizadas (`ValidacionException`, etc.)    |
 | `Utilidades/`  | —                      | `Logger`: guarda errores en `errores.log`                   |
 
-Flujo: `Views → BLL → DAL → MySQL`
+Flujo: `Views → BLL → IRepositorio (DAO) → MySQL`
+
+### Patrones de diseño
+
+- **DTO:** objetos que transportan datos entre capas (`DTO/`).
+- **DAO:** una clase por tabla con el SQL (`ProductoDAO`, `ClienteDAO`, ...).
+- **Repositorio:** cada DAO implementa una interfaz (`IProductoRepositorio`, ...). La BLL solo conoce la interfaz, no MySQL.
+- **Factory:** `DAL/FabricaRepositorios.cs` es el único lugar que decide qué clase concreta se usa. Las BLL piden ahí su repositorio.
 
 ## Funcionalidades
 

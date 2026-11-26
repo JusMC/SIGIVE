@@ -1,4 +1,5 @@
 using MySql.Data.MySqlClient;
+using SIGIVE.DAL.Interfaces;
 using SIGIVE.DTO;
 
 namespace SIGIVE.DAL
@@ -6,7 +7,7 @@ namespace SIGIVE.DAL
     /// <summary>
     ///     DAO de productos: consultas SQL de la tabla productos.
     /// </summary>
-    public class ProductoDAO
+    public class ProductoDAO : IProductoRepositorio
     {
         // Consulta base: trae el producto y el nombre de su categoría (LEFT JOIN porque puede no tener)
         private const string SelectBase =
