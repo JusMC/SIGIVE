@@ -98,6 +98,9 @@ namespace SIGIVE.Views
             // 
             // btnSalir
             // 
+            btnSalir.Cursor = Cursors.Hand;
+            btnSalir.FlatAppearance.BorderColor = Color.FromArgb(192, 0, 0);
+            btnSalir.FlatAppearance.BorderSize = 2;
             btnSalir.Location = new Point(333, 361);
             btnSalir.Name = "btnSalir";
             btnSalir.Size = new Size(190, 40);
@@ -122,7 +125,7 @@ namespace SIGIVE.Views
             MaximizeBox = false;
             Name = "FormPrincipal";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "SIGIVE - Menú principal";
+            Text = "/";
             Load += FormPrincipal_Load;
             ResumeLayout(false);
             PerformLayout();
